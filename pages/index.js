@@ -1,7 +1,7 @@
 import { Hero } from "@components/ui/common";
 import { CourseList } from "@components/ui/course";
-import { OrderCard } from "@components/ui/order";
 import { BaseLayout } from "@components/ui/layout";
+
 import { getAllCourses } from "@content/fetcher";
 
 const Home = ({ courses }) => {
