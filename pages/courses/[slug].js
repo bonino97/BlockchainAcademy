@@ -14,8 +14,8 @@ const Course = ({ course }) => {
         />
       </div>
 
-      <Keypoints />
-      <Curriculum />
+      <Keypoints points={course.wsl} />
+      <Curriculum locked={true} />
       <Modal />
     </>
   );

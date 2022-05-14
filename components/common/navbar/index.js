@@ -29,11 +29,12 @@ const Navbar = () => {
                   Wishlist
                 </a>
               </Link>
-              <Link href={"/"}>
-                <a className="font-medium mr-8 text-indigo-600 hover:text-indigo-500">
-                  Log in
-                </a>
-              </Link>
+              <a
+                href="#"
+                className="px-8 py-3 rounded-md shadow border text-base font-medium text-white bg-indigo-600 hover:bg-indigo-500"
+              >
+                Connect
+              </a>
             </div>
           </div>
         </nav>
