@@ -1,18 +1,13 @@
-import { Hero, Breadcrumbs } from "@components/common";
-import { WalletBar, EthRates } from "@components/web3";
-import { CourseList } from "@components/course";
-import { OrderCard } from "@components/order";
-import { BaseLayout } from "@components/layout";
+import { Hero } from "@components/ui/common";
+import { CourseList } from "@components/ui/course";
+import { OrderCard } from "@components/ui/order";
+import { BaseLayout } from "@components/ui/layout";
 import { getAllCourses } from "@content/fetcher";
 
 const Home = ({ courses }) => {
   return (
     <>
       <Hero />
-      {/* <Breadcrumbs />
-      <WalletBar />
-      <EthRates />
-      <OrderCard /> */}
       <CourseList courses={courses} />
     </>
   );
