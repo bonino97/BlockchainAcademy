@@ -40,14 +40,14 @@ const Navbar = () => {
                   Loading...
                 </Button>
               ) : isWeb3Loaded ? (
-                account ? (
+                account?.data ? (
                   <Button
                     onClick={connect}
                     variant="red"
                     className="cursor-default"
                     hoverable={false}
                   >
-                    Hi there!
+                    Hi there {account.isAdmin && "Admin"}
                   </Button>
                 ) : (
                   <Button onClick={connect}>Connect</Button>
@@ -65,6 +65,13 @@ const Navbar = () => {
           </div>
         </nav>
       </div>
+      {account?.data && (
+        <div className="flex justify-end pt-1 sm:px-6 lg:px-8">
+          <div className="text-white bg-indigo-600 rounded-md p-2">
+            {account?.data}
+          </div>
+        </div>
+      )}
     </section>
   );
 };
