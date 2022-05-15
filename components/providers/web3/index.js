@@ -1,7 +1,14 @@
 import detectEthereumProvider from "@metamask/detect-provider";
 import Web3 from "web3";
+import { setupHooks } from "@components/providers/web3/hooks/setupHooks";
 
-const { createContext, useContext, useState, useEffect } = require("react");
+const {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useMemo,
+} = require("react");
 const Web3Context = createContext(null);
 
 const initialValues = {
@@ -17,7 +24,7 @@ const Web3Provider = ({ children }) => {
     const loadProvider = async () => {
       try {
         const provider = await detectEthereumProvider();
-        console.log(provider);
+
         if (!provider) {
           setWeb3Api((api) => ({ ...api, isLoading: false }));
           return alert("Please, install Metamask.");
@@ -39,8 +46,37 @@ const Web3Provider = ({ children }) => {
     loadProvider();
   }, []);
 
+  const _web3Api = useMemo(() => {
+    const { web3, provider } = web3Api;
+    return {
+      ...web3Api,
+      isWeb3Loaded: web3 != null,
+      hooks: setupHooks(web3Api),
+      connect: provider
+        ? async () => {
+            try {
+              await provider.request({ method: "eth_requestAccounts" });
+            } catch (error) {
+              alert("Cannot connect to Metamask, try again");
+              location.reload();
+            }
+          }
+        : () => dispatchErrors(),
+    };
+  }, [web3Api]);
+
   return (
-    <Web3Context.Provider value={web3Api}>{children}</Web3Context.Provider>
+    <Web3Context.Provider value={_web3Api}>{children}</Web3Context.Provider>
+  );
+};
+
+const dispatchErrors = (error = {}) => {
+  alert(
+    "Cannot connect to Metamask, try again later or contact an administrator."
+  );
+  console.error(
+    "Cannot connect to Metamask, try again later or contact an administrator.",
+    error
   );
 };
 
