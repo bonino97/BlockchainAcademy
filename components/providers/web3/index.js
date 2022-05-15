@@ -51,7 +51,7 @@ const Web3Provider = ({ children }) => {
     return {
       ...web3Api,
       isWeb3Loaded: web3 != null,
-      hooks: setupHooks(web3Api),
+      getHooks: () => setupHooks(web3),
       connect: provider
         ? async () => {
             try {
@@ -82,6 +82,11 @@ const dispatchErrors = (error = {}) => {
 
 export const useWeb3 = () => {
   return useContext(Web3Context);
+};
+
+export const useHooks = (cb) => {
+  const { getHooks } = useWeb3();
+  return cb(getHooks());
 };
 
 export default Web3Provider;
