@@ -5,8 +5,7 @@ import { WalletBar } from "@components/ui/web3";
 
 import { getAllCourses } from "@content/fetcher";
 
-import { useNetwork } from "@components/hooks/web3/useNetwork";
-import { useAccount } from "@components/hooks/web3/useAccount";
+import { useNetwork, useAccount } from "@components/hooks/web3";
 
 const Marketplace = ({ courses }) => {
   const { account } = useAccount();
@@ -14,8 +13,15 @@ const Marketplace = ({ courses }) => {
   return (
     <>
       <div className="py-4">
-        {network.data}
-        <WalletBar address={account.data} network={network.data} />
+        <WalletBar
+          address={account.data}
+          network={{
+            data: network.data,
+            target: network.target,
+            isSupported: network.isSupported,
+            hasInitialResponse: network.hasInitialResponse,
+          }}
+        />
       </div>
       <CourseList courses={courses} />
     </>

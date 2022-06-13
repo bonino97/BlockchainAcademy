@@ -14,8 +14,10 @@ const NETWORKS = {
   80001: "Polygon Mumbai Test Network",
 };
 
+const targetNetwork = NETWORKS[process.env.NEXT_PUBLIC_TARGET_CHAIN_ID];
+
 export const handler = (web3, provider) => () => {
-  const { mutate, ...rest } = useSWR(
+  const { data, mutate, ...rest } = useSWR(
     () => (web3 ? "web3/network" : null),
     async () => {
       const chainId = await web3.eth.getChainId();
@@ -31,9 +33,10 @@ export const handler = (web3, provider) => () => {
   }, [web3]);
 
   return {
-    network: {
-      mutate,
-      ...rest,
-    },
+    data,
+    mutate,
+    target: targetNetwork,
+    isSupported: data === targetNetwork,
+    ...rest,
   };
 };

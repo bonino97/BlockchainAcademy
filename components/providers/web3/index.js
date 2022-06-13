@@ -16,6 +16,7 @@ const initialValues = {
   web3: null,
   contract: null,
   isLoading: true,
+  hooks: setupHooks(),
 };
 
 const Web3Provider = ({ children }) => {
@@ -27,7 +28,7 @@ const Web3Provider = ({ children }) => {
 
         if (!provider) {
           setWeb3Api((api) => ({ ...api, isLoading: false }));
-          return alert("Please, install Metamask.");
+          return;
         }
 
         const web3 = new Web3(provider);
@@ -36,6 +37,7 @@ const Web3Provider = ({ children }) => {
           web3,
           contract: null,
           isLoading: false,
+          hooks: setupHooks(web3, provider),
         });
       } catch (error) {
         console.error(error);
@@ -47,10 +49,10 @@ const Web3Provider = ({ children }) => {
   }, []);
 
   const _web3Api = useMemo(() => {
-    const { web3, provider } = web3Api;
+    const { web3, provider, isLoading } = web3Api;
     return {
       ...web3Api,
-      isWeb3Loaded: web3 != null,
+      requireInstall: !isLoading && !web3,
       getHooks: () => setupHooks(web3, provider),
       connect: provider
         ? async () => {
@@ -85,8 +87,8 @@ export const useWeb3 = () => {
 };
 
 export const useHooks = (cb) => {
-  const { getHooks } = useWeb3();
-  return cb(getHooks());
+  const { hooks } = useWeb3();
+  return cb(hooks);
 };
 
 export default Web3Provider;
